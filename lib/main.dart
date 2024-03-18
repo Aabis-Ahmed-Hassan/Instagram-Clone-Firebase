@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone_firebase/view/login_view.dart';
+import 'package:instagram_clone_firebase/utils/Routes/route_names.dart';
+import 'package:instagram_clone_firebase/utils/Routes/routes.dart';
 
 import 'firebase_options.dart';
 
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
       //   WebLayout: WebLayout(),
       //   MobileLayout: MobileLayout(),
       // ),
-      home: LoginView(),
+
+      initialRoute: RouteNames.login,
+      onGenerateRoute: Routes.generateRoutes,
     );
   }
 }

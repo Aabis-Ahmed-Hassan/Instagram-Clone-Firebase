@@ -4,6 +4,8 @@ import 'package:instagram_clone_firebase/components/my_auth_button.dart';
 import 'package:instagram_clone_firebase/components/my_text_form_field.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 
+import '../utils/Routes/route_names.dart';
+
 class LoginView extends StatefulWidget {
   LoginView({super.key});
 
@@ -49,7 +51,7 @@ class _LoginViewState extends State<LoginView> {
                 height: height * 0.035,
               ),
               MyTextFormField(
-                  hintText: 'Enter Your Email',
+                  hintText: 'Enter your email',
                   controller: _emailController,
                   inputType: TextInputType.emailAddress,
                   obscureText: false),
@@ -57,7 +59,7 @@ class _LoginViewState extends State<LoginView> {
                 height: height * 0.035,
               ),
               MyTextFormField(
-                  hintText: 'Enter Your Password',
+                  hintText: 'Enter your password',
                   controller: _passwordController,
                   inputType: TextInputType.text,
                   obscureText: true),
@@ -66,17 +68,22 @@ class _LoginViewState extends State<LoginView> {
               ),
               MyAuthButton(
                 onTap: () {},
-                title: 'Login',
+                title: 'Log In',
               ),
               Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Don't have an account?  "),
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteNames.signup);
+                    },
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
