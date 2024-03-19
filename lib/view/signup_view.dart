@@ -98,6 +98,9 @@ class _SignupViewState extends State<SignupView> {
               children: [
                 // Spacer(),
 
+                SizedBox(
+                  height: height * 0.065,
+                ),
                 //show instagram logo
                 SvgPicture.asset(
                   'assets/images/instagram_logo.svg',
@@ -261,6 +264,11 @@ class _SignupViewState extends State<SignupView> {
                   title: 'Sign Up',
                   loading: loading,
                 ),
+
+                SizedBox(
+                  height: height * 0.065,
+                ),
+
                 //don't have an account text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

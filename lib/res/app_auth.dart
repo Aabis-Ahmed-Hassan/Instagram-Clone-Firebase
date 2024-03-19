@@ -35,7 +35,7 @@ class AppAuth {
 
       response = 'success';
 
-      Navigator.pushNamed(context, RouteNames.home);
+      Navigator.pushReplacementNamed(context, RouteNames.home);
     } catch (e) {
       Utils.showToastMessage(e.toString());
 
