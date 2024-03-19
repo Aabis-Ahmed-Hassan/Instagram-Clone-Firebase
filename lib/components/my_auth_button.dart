@@ -6,10 +6,12 @@ class MyAuthButton extends StatelessWidget {
 
   String title;
 
+  bool loading;
   MyAuthButton({
     super.key,
     required this.onTap,
     required this.title,
+    required this.loading,
   });
 
   @override
@@ -25,12 +27,16 @@ class MyAuthButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
         ),
         child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
+          child: loading
+              ? CircularProgressIndicator(
+                  color: primaryColor,
+                )
+              : Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
         ),
       ),
     );

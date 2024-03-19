@@ -5,6 +5,7 @@ import 'package:instagram_clone_firebase/components/my_text_form_field.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 
 import '../utils/Routes/route_names.dart';
+import '../utils/constants/padding.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({super.key});
@@ -35,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
           body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: width * 0.05,
+          horizontal: width * padding,
         ),
         child: Center(
           child: Column(
@@ -68,6 +69,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               MyAuthButton(
                 onTap: () {},
+                loading: false,
                 title: 'Log In',
               ),
               Spacer(),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,7 @@ import 'package:instagram_clone_firebase/components/my_auth_button.dart';
 import 'package:instagram_clone_firebase/components/my_text_form_field.dart';
 import 'package:instagram_clone_firebase/res/app_auth.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
+import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 
 import '../utils/Routes/route_names.dart';
@@ -25,6 +27,14 @@ class _SignupViewState extends State<SignupView> {
 
   final TextEditingController _passwordController = TextEditingController();
 
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _bioFocusNode = FocusNode();
+
+  var formKey = GlobalKey<FormState>();
+
+  bool loading = false;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -32,11 +42,40 @@ class _SignupViewState extends State<SignupView> {
 
     _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose();
+    _bioController.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _bioFocusNode.dispose();
+    _usernameFocusNode.dispose();
+  }
+
+  void signupUser() async {
+    setState(() {
+      loading = true;
+    });
+    String response = await AppAuth().signupUser(
+        _emailController.text,
+        _passwordController.text,
+        _usernameController.text,
+        _bioController.text,
+        pickedImage!,
+        context);
+
+    setState(() {
+      loading = false;
+    });
+    if (kDebugMode) {
+      print(response);
+    }
   }
 
   File? pickedImage;
+
   void selectImage() async {
-    File response = await Utils.addPhoto(ImageSource.camera);
+//allow user to pick image and then return the picked image
+    File response = await Utils.pickImage(ImageSource.camera);
+    //update default profile photo with user's image
     setState(() {
       pickedImage = response;
     });
@@ -51,7 +90,7 @@ class _SignupViewState extends State<SignupView> {
           body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: width * 0.05,
+            horizontal: width * padding,
           ),
           child: Center(
             child: Column(
@@ -121,59 +160,107 @@ class _SignupViewState extends State<SignupView> {
                   height: height * 0.035,
                 ),
 
-                //enter username
-                MyTextFormField(
-                  hintText: 'Enter your username',
-                  controller: _usernameController,
-                  inputType: TextInputType.text,
-                  obscureText: false,
-                ),
-                SizedBox(
-                  height: height * 0.035,
-                ),
-                //enter email
-                MyTextFormField(
-                    hintText: 'Enter your email',
-                    controller: _emailController,
-                    inputType: TextInputType.emailAddress,
-                    obscureText: false),
-                SizedBox(
-                  height: height * 0.035,
-                ),
-                //enter password
-                MyTextFormField(
-                    hintText: 'Enter your password',
-                    controller: _passwordController,
-                    inputType: TextInputType.text,
-                    obscureText: true),
-                SizedBox(
-                  height: height * 0.035,
-                ),
-                //enter bio
-                MyTextFormField(
-                    hintText: 'Enter your bio',
-                    controller: _bioController,
-                    inputType: TextInputType.text,
-                    obscureText: false),
-                SizedBox(
-                  height: height * 0.035,
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      //enter username
+                      MyTextFormField(
+                        hintText: 'Enter your username',
+                        controller: _usernameController,
+                        inputType: TextInputType.text,
+                        obscureText: false,
+                        focusNode: _usernameFocusNode,
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return 'Username should be atleast 6 characters';
+                          }
+                        },
+                        onFieldSubmitted: (value) {
+                          Utils.changeFocusNode(
+                              context, _usernameFocusNode, _emailFocusNode);
+                        },
+                      ),
+                      SizedBox(
+                        height: height * 0.035,
+                      ),
+                      //enter email
+                      MyTextFormField(
+                        hintText: 'Enter your email',
+                        focusNode: _emailFocusNode,
+                        controller: _emailController,
+                        inputType: TextInputType.emailAddress,
+                        obscureText: false,
+                        validator: (value) {
+                          bool isValidEmail =
+                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                  .hasMatch(value);
+
+                          if (value == null || value.isEmpty) {
+                            return ' Please enter your email';
+                          } else if (!isValidEmail) {
+                            return 'Please enter a valid email address';
+                          }
+                        },
+                        onFieldSubmitted: (value) {
+                          Utils.changeFocusNode(
+                              context, _emailFocusNode, _passwordFocusNode);
+                        },
+                      ),
+
+                      SizedBox(
+                        height: height * 0.035,
+                      ),
+                      //enter password
+                      MyTextFormField(
+                        hintText: 'Enter your password',
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                        inputType: TextInputType.text,
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return 'Password should be atleast 6 characters';
+                          }
+                        },
+                        obscureText: true,
+                        onFieldSubmitted: (value) {
+                          Utils.changeFocusNode(
+                              context, _passwordFocusNode, _bioFocusNode);
+                        },
+                      ),
+                      SizedBox(
+                        height: height * 0.035,
+                      ),
+                      //enter bio
+                      MyTextFormField(
+                        hintText: 'Enter your bio',
+                        controller: _bioController,
+                        focusNode: _bioFocusNode,
+                        inputType: TextInputType.text,
+                        validator: (value) {
+                          if (value.length < 20) {
+                            return 'Username should be atleast 20 characters';
+                          }
+                        },
+                        obscureText: false,
+                      ),
+                      SizedBox(
+                        height: height * 0.035,
+                      ),
+                    ],
+                  ),
                 ),
                 //sign up button
                 MyAuthButton(
-                  onTap: () async {
-                    print('tapped');
-                    String response = await AppAuth().signupUser(
-                      _emailController.text,
-                      _passwordController.text,
-                      _usernameController.text,
-                      _bioController.text,
-                    );
-                    print(response);
-                    print('tapped');
-                  },
+                  onTap: signupUser,
+                  // onTap: () async {
+                  //   if (formKey.currentState!.validate()) {
+                  //     signupUser();
+                  //   }
+                  // },
                   title: 'Sign Up',
+                  loading: loading,
                 ),
-                // Spacer(),
                 //don't have an account text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

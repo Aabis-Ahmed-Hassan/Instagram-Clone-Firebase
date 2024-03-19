@@ -5,12 +5,18 @@ class MyTextFormField extends StatelessWidget {
   TextEditingController controller;
   TextInputType inputType;
   bool obscureText;
+  FocusNode? focusNode;
+  var onFieldSubmitted;
+  var validator;
   MyTextFormField({
     super.key,
     required this.hintText,
     required this.controller,
     required this.inputType,
     required this.obscureText,
+    this.focusNode,
+    this.onFieldSubmitted,
+    this.validator,
   });
 
   @override
@@ -21,8 +27,11 @@ class MyTextFormField extends StatelessWidget {
       borderSide: Divider.createBorderSide(context),
     );
     return TextFormField(
+      focusNode: focusNode,
+      onFieldSubmitted: onFieldSubmitted,
       controller: controller,
       obscureText: obscureText,
+      validator: validator,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(width * 0.035),
         hintText: hintText,

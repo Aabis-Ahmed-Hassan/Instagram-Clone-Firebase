@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       //   MobileLayout: MobileLayout(),
       // ),
 
-      initialRoute: RouteNames.login,
+      initialRoute: RouteNames.splash,
       onGenerateRoute: Routes.generateRoutes,
     );
   }
