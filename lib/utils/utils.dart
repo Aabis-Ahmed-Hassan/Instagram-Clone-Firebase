@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone_firebase/utils/Routes/route_names.dart';
 
 class Utils {
   static pickImage(ImageSource source) async {
@@ -22,5 +24,14 @@ class Utils {
     currentNode.unfocus();
 
     FocusScope.of(context).requestFocus(nextNode);
+  }
+
+  static signOutUser(BuildContext context) {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    _auth.signOut().then((value) {
+      Navigator.pushReplacementNamed(context, RouteNames.login);
+    }).onError((error, stackTrace) {
+      showToastMessage(error.toString());
+    });
   }
 }

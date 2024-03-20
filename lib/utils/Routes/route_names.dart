@@ -10,4 +10,14 @@ class RouteNames {
   static const splash = 'splash';
 //home view
   static const home = 'home';
+
+  //layout determiner
+
+  static const layout_determiner = 'layout_determiner';
+
+//mobile view
+  static const mobile = 'mobile';
+
+//web view
+  static const web = 'web';
 }

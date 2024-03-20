@@ -4,23 +4,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone_firebase/auth/sign_up_user.dart';
 import 'package:instagram_clone_firebase/components/my_auth_button.dart';
 import 'package:instagram_clone_firebase/components/my_text_form_field.dart';
-import 'package:instagram_clone_firebase/res/app_auth.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 
 import '../utils/Routes/route_names.dart';
 
-class SignupView extends StatefulWidget {
-  SignupView({super.key});
+class SignUpView extends StatefulWidget {
+  SignUpView({super.key});
 
   @override
-  State<SignupView> createState() => _SignupViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _SignupViewState extends State<SignupView> {
+class _SignUpViewState extends State<SignUpView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -34,7 +34,7 @@ class _SignupViewState extends State<SignupView> {
 
   var formKey = GlobalKey<FormState>();
 
-  bool loading = false;
+  bool _loading = false;
   @override
   void dispose() {
     // TODO: implement dispose
@@ -50,20 +50,20 @@ class _SignupViewState extends State<SignupView> {
     _usernameFocusNode.dispose();
   }
 
-  void signupUser() async {
+  void signUpUser() async {
     setState(() {
-      loading = true;
+      _loading = true;
     });
-    String response = await AppAuth().signupUser(
+    String response = await SignUpUser().signUpUser(
         _emailController.text,
         _passwordController.text,
         _usernameController.text,
         _bioController.text,
-        pickedImage!,
+        pickedImage!, //*
         context);
 
     setState(() {
-      loading = false;
+      _loading = false;
     });
     if (kDebugMode) {
       print(response);
@@ -255,14 +255,14 @@ class _SignupViewState extends State<SignupView> {
                 ),
                 //sign up button
                 MyAuthButton(
-                  onTap: signupUser,
+                  onTap: signUpUser,
                   // onTap: () async {
                   //   if (formKey.currentState!.validate()) {
                   //     signupUser();
                   //   }
                   // },
                   title: 'Sign Up',
-                  loading: loading,
+                  loading: _loading,
                 ),
 
                 SizedBox(

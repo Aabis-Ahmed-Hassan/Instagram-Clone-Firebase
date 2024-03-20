@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone_firebase/auth/check_user_status.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
-import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 
-import '../utils/Routes/route_names.dart';
+import '../utils/constants/padding.dart';
 
 class SplashView extends StatefulWidget {
   SplashView({super.key});
@@ -20,9 +18,7 @@ class _SplashViewState extends State<SplashView> {
     // TODO: implement initState
     super.initState();
 
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, RouteNames.login);
-    });
+    UserStatus().isLogin(context);
   }
 
   @override
