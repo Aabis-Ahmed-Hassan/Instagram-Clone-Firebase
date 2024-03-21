@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone_firebase/responsiveness/layout_determiner.dart';
 import 'package:instagram_clone_firebase/view/home_view.dart';
 import 'package:instagram_clone_firebase/view/login_view.dart';
 import 'package:instagram_clone_firebase/view/signup_view.dart';
 import 'package:instagram_clone_firebase/view/splash_view.dart';
 
-import '../../responsiveness/mobile_layout.dart';
-import '../../responsiveness/web_layout.dart';
+import '../../view/responsiveness/layout_determiner.dart';
+import '../../view/responsiveness/mobile_layout.dart';
+import '../../view/responsiveness/web_layout.dart';
 import 'route_names.dart';
 
 class Routes {

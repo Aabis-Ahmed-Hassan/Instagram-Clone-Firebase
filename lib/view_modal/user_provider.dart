@@ -7,7 +7,7 @@ class UserProvider with ChangeNotifier {
 
   UserModal get getUser => _user!;
 
-  void updateUser() async {
+  Future<void> updateUser() async {
     UserModal user = await UserDetails.getUserDetails();
 
     _user = user;

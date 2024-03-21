@@ -10,6 +10,12 @@ class UserStatus {
     var user = _auth.currentUser;
 
     if (user != null) {
+      // void getUser() async {
+      //   final _userProvider = Provider.of<UserProvider>(context, listen: false);
+      //
+      //   await _userProvider.updateUser();
+      // }
+
       Timer(Duration(seconds: 3), () {
         Navigator.pushReplacementNamed(context, RouteNames.layout_determiner);
       });
