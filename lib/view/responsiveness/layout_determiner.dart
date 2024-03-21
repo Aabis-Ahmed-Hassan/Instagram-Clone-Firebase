@@ -27,8 +27,9 @@ class _LayoutDeterminerState extends State<LayoutDeterminer> {
     getUser();
   }
 
-   getUser() async {
-    UserProvider _userProvider = Provider.of<UserProvider>(context,listen: false);
+  getUser() async {
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
 
     await _userProvider.updateUser();
   }
