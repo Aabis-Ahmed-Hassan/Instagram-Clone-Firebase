@@ -18,50 +18,12 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   var _postImage;
 
-  chooseImage(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) => SimpleDialog(
-              title: Text(
-                'Pick an Image',
-              ),
-              children: [
-                SimpleDialogOption(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    _postImage = await Utils.pickImage(ImageSource.camera);
-                    setState(() {});
-                  },
-                  child: Text(
-                    'Capture a Picture',
-                  ),
-                ),
-                SimpleDialogOption(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    _postImage = await Utils.pickImage(ImageSource.gallery);
-                    setState(() {});
-                  },
-                  child: Text(
-                    'Choose from Gallery',
-                  ),
-                ),
-                SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Cancel',
-                  ),
-                ),
-              ],
-            ));
-  }
 
   TextEditingController _postDescription = TextEditingController();
 
-  bool loading = false;
+  bool _loading = false;
 
+  //dispose
   @override
   void dispose() {
     // TODO: implement dispose
@@ -69,6 +31,49 @@ class _AddPostState extends State<AddPost> {
     _postDescription.dispose();
   }
 
+  //dialog box to select the image to post
+  chooseImage(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(
+          'Pick an Image',
+        ),
+        children: [
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              _postImage = await Utils.pickImage(ImageSource.camera);
+              setState(() {});
+            },
+            child: Text(
+              'Capture a Picture',
+            ),
+          ),
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              _postImage = await Utils.pickImage(ImageSource.gallery);
+              setState(() {});
+            },
+            child: Text(
+              'Choose from Gallery',
+            ),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Cancel',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //upload post on firestore
   postIt(
     String description,
     String username,
@@ -76,16 +81,35 @@ class _AddPostState extends State<AddPost> {
     String uid,
   ) async {
     setState(() {
-      loading = true;
+      _loading = true;
     });
 
-    await uploadPostData(_postImage, uid, description, username, profileImage);
+    try {
+      await uploadPostData(
+          _postImage, uid, description, username, profileImage);
+      setState(
+        () {
+          _loading = false;
+        },
+      );
+      setState(() {
+        _postImage = null;
+      });
+    } catch (e) {
+      setState(
+        () {
+          _loading = false;
+        },
+      );
+      Utils.showToastMessage(e.toString());
+    }
+  }
 
-    setState(
-      () {
-        loading = false;
-      },
-    );
+  //clear the selected image and show UPLOAD icon
+  void clearImage() {
+    setState(() {
+      _postImage = null;
+    });
   }
 
   @override
@@ -110,8 +134,9 @@ class _AddPostState extends State<AddPost> {
         : Scaffold(
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
-              leading: Icon(
-                Icons.arrow_back,
+              leading: IconButton(
+                onPressed: clearImage,
+                icon: Icon(Icons.arrow_back),
               ),
               title: Text(
                 'Add Post',
@@ -145,51 +170,61 @@ class _AddPostState extends State<AddPost> {
               padding: EdgeInsets.symmetric(horizontal: width * padding),
               child: Column(
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: width * 0.075,
-                              backgroundImage: NetworkImage(
-                                user.getUser.toString(),
+                  //show linear progress indicator
+                  _loading
+                      ? LinearProgressIndicator(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(15),
+                          minHeight: 1.5,
+                        )
+                      : Container(),
+                  //using padding to add some space above and below the row
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: height * 0.01,
+                      bottom: height * 0.01,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: width * 0.075,
+                                backgroundImage: NetworkImage(
+                                  user.getUser.imageUrl.toString(),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 9,
-                        child: TextFormField(
-                          controller: _postDescription,
-                          decoration: InputDecoration(
-                            hintText: 'Write a caption...',
-                            border: InputBorder.none,
+                            ],
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        // child: Image.file(_postImage!),
-                        child: _postImage != null
-                            ? Image.file(_postImage!)
-                            : Container(),
-                      ),
-                    ],
+                        Expanded(
+                          flex: 9,
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.top,
+                            maxLines: 4,
+                            controller: _postDescription,
+                            decoration: InputDecoration(
+                              hintText: 'Write a caption...',
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          // child: Image.file(_postImage!),
+                          child: _postImage != null
+                              ? Image.file(_postImage!)
+                              : Container(),
+                        ),
+                      ],
+                    ),
                   ),
                   Divider(),
                   Container(),
-                  loading
-                      ? CircularProgressIndicator()
-                      : Container(
-                          height: 50,
-                          width: 50,
-                          color: Colors.blue,
-                        ),
                 ],
               ),
             ),
