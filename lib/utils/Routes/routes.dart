@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone_firebase/view/auth/login_view.dart';
+import 'package:instagram_clone_firebase/view/auth/signup_view.dart';
 import 'package:instagram_clone_firebase/view/home_view.dart';
-import 'package:instagram_clone_firebase/view/login_view.dart';
-import 'package:instagram_clone_firebase/view/signup_view.dart';
 import 'package:instagram_clone_firebase/view/splash_view.dart';
 
 import '../../view/responsiveness/layout_determiner.dart';
-import '../../view/responsiveness/mobile_layout.dart';
 import '../../view/responsiveness/web_layout.dart';
+import '../../view/root_file.dart';
 import 'route_names.dart';
 
 class Routes {
@@ -25,7 +25,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => HomeView());
 
       case RouteNames.mobile:
-        return MaterialPageRoute(builder: (context) => MobileLayout());
+        return MaterialPageRoute(builder: (context) => RootFile());
 
       case RouteNames.web:
         return MaterialPageRoute(builder: (context) => WebLayout());
@@ -33,7 +33,7 @@ class Routes {
       case RouteNames.layout_determiner:
         return MaterialPageRoute(
             builder: (context) => LayoutDeterminer(
-                WebLayout: WebLayout(), MobileLayout: MobileLayout()));
+                WebLayout: WebLayout(), MobileLayout: RootFile()));
 
       default:
         return MaterialPageRoute(

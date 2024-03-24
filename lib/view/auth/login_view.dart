@@ -7,7 +7,7 @@ import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 
-import '../utils/Routes/route_names.dart';
+import '../../utils/Routes/route_names.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({super.key});

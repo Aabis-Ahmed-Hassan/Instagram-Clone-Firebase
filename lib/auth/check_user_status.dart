@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/utils/Routes/route_names.dart';
+import 'package:provider/provider.dart';
+
+import '../view_modal/user_provider.dart';
 
 class UserStatus {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,13 +13,14 @@ class UserStatus {
     var user = _auth.currentUser;
 
     if (user != null) {
-      // void getUser() async {
-      //   final _userProvider = Provider.of<UserProvider>(context, listen: false);
-      //
-      //   await _userProvider.updateUser();
-      // }
+      getUser() async {
+        UserProvider _userProvider =
+            Provider.of<UserProvider>(context, listen: false);
 
-      Timer(Duration(seconds: 3), () {
+        await _userProvider.updateUser();
+      }
+
+      Timer(Duration(seconds: 2), () {
         Navigator.pushReplacementNamed(context, RouteNames.layout_determiner);
       });
     } else {

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 
-import '../add_post.dart';
+import 'bottom_nav_bar_screens/add_post.dart';
 
-class MobileLayout extends StatefulWidget {
-  MobileLayout({super.key});
+class RootFile extends StatefulWidget {
+  RootFile({super.key});
 
   @override
-  State<MobileLayout> createState() => _MobileLayoutState();
+  State<RootFile> createState() => _RootFileState();
 }
 
-class _MobileLayoutState extends State<MobileLayout> {
+class _RootFileState extends State<RootFile> {
   List<Widget> pages = [
     RoughScreen(i: 0),
     RoughScreen(i: 1),

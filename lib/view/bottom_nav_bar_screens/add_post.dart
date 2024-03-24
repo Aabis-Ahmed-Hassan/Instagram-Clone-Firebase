@@ -6,7 +6,7 @@ import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/view_modal/user_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/utils.dart';
+import '../../utils/utils.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -17,7 +17,6 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
   var _postImage;
-
 
   TextEditingController _postDescription = TextEditingController();
 
