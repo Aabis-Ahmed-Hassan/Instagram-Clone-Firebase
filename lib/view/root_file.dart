@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
+import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/home.dart';
 
 import 'bottom_nav_bar_screens/add_post.dart';
 
@@ -12,14 +13,16 @@ class RootFile extends StatefulWidget {
 }
 
 class _RootFileState extends State<RootFile> {
+
+  //screens for bottom nav bar
   List<Widget> pages = [
-    RoughScreen(i: 0),
+HomeScreen(),
     RoughScreen(i: 1),
     AddPost(),
     RoughScreen(i: 3),
     RoughScreen(i: 4),
   ];
-  int currentPage = 2;
+  int currentPage = 0;
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height * 1;

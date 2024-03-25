@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/view/auth/login_view.dart';
 import 'package:instagram_clone_firebase/view/auth/signup_view.dart';
-import 'package:instagram_clone_firebase/view/home_view.dart';
 import 'package:instagram_clone_firebase/view/splash_view.dart';
 
 import '../../view/responsiveness/layout_determiner.dart';
@@ -20,9 +19,6 @@ class Routes {
 
       case RouteNames.splash:
         return MaterialPageRoute(builder: (context) => SplashView());
-
-      case RouteNames.home:
-        return MaterialPageRoute(builder: (context) => HomeView());
 
       case RouteNames.mobile:
         return MaterialPageRoute(builder: (context) => RootFile());

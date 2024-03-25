@@ -8,8 +8,6 @@ class RouteNames {
 
   //splash view
   static const splash = 'splash';
-//home view
-  static const home = 'home';
 
   //layout determiner
 
