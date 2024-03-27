@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_clone_firebase/modals/post_modal.dart';
-import 'package:instagram_clone_firebase/post/upload_post_image.dart';
+import 'package:instagram_clone_firebase/upload_post/upload_post_image.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 

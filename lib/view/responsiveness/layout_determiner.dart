@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/utils/responsive_dimensions.dart';
+import 'package:provider/provider.dart';
+
+import '../../view_modal/user_provider.dart';
 
 class LayoutDeterminer extends StatefulWidget {
   Widget WebLayout;
@@ -21,15 +24,15 @@ class _LayoutDeterminerState extends State<LayoutDeterminer> {
     // TODO: implement initState
     super.initState();
 
-    // getUser();
+    getUser();
   }
 
-  // getUser() async {
-  //   UserProvider _userProvider =
-  //       Provider.of<UserProvider>(context, listen: false);
-  //
-  //   await _userProvider.updateUser();
-  // }
+  getUser() async {
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+
+    await _userProvider.updateUser();
+  }
 
   @override
   Widget build(BuildContext context) {

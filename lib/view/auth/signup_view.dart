@@ -72,14 +72,56 @@ class _SignUpViewState extends State<SignUpView> {
 
   File? pickedImage;
 
-  void selectImage() async {
-//allow user to pick image and then return the picked image
-    File response = await Utils.pickImage(ImageSource.camera);
-    //update default profile photo with user's image
-    setState(() {
-      pickedImage = response;
-    });
+  selectImage(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(
+          'Pick an Image',
+        ),
+        children: [
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              pickedImage = await Utils.pickImage(ImageSource.camera);
+              setState(() {});
+            },
+            child: Text(
+              'Capture a Picture',
+            ),
+          ),
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              pickedImage = await Utils.pickImage(ImageSource.gallery);
+              setState(() {});
+            },
+            child: Text(
+              'Choose from Gallery',
+            ),
+          ),
+          SimpleDialogOption(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Cancel',
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+//
+//   void selectImage() async {
+// //allow user to pick image and then return the picked image
+//     File response = await Utils.pickImage(ImageSource.camera);
+//     //update default profile photo with user's image
+//     setState(() {
+//       pickedImage = response;
+//     });
+//   }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +156,7 @@ class _SignUpViewState extends State<SignUpView> {
                 //show profile image
                 InkWell(
                   onTap: () {
-                    selectImage();
+                    selectImage(context);
                   },
                   child: Stack(
                     alignment: Alignment.bottomCenter,

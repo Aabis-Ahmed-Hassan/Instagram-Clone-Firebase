@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone_firebase/post/upload_post_data.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/view_modal/user_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../upload_post/upload_post_data.dart';
 import '../../utils/utils.dart';
 
 class AddPost extends StatefulWidget {
@@ -30,7 +30,7 @@ class _AddPostState extends State<AddPost> {
     _postDescription.dispose();
   }
 
-  //dialog box to select the image to post
+  //dialog box to select the image to upload_post
   chooseImage(BuildContext context) async {
     return showDialog(
       context: context,
@@ -72,7 +72,7 @@ class _AddPostState extends State<AddPost> {
     );
   }
 
-  //upload post on firestore
+  //upload upload_post on firestore
   postIt(
     String description,
     String username,
@@ -91,9 +91,8 @@ class _AddPostState extends State<AddPost> {
           _loading = false;
         },
       );
-      setState(() {
-        _postImage = null;
-      });
+
+      clearImage();
     } catch (e) {
       setState(
         () {
@@ -104,7 +103,7 @@ class _AddPostState extends State<AddPost> {
     }
   }
 
-  //clear the selected image and show UPLOAD icon
+  // clear the selected image and show UPLOAD icon
   void clearImage() {
     setState(() {
       _postImage = null;
@@ -223,7 +222,6 @@ class _AddPostState extends State<AddPost> {
                     ),
                   ),
                   Divider(),
-                  Container(),
                 ],
               ),
             ),

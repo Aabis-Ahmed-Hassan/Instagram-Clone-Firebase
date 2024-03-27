@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,5 +34,21 @@ class Utils {
     }).onError((error, stackTrace) {
       showToastMessage(error.toString());
     });
+  }
+
+  static Future<void> likePost(String postId, String uid, List likes) async {
+    if (likes.contains(uid)) {
+      likes.remove(uid);
+    } else {
+      likes.add(uid);
+    }
+    try {
+      var ref = FirebaseFirestore.instance.collection('Posts');
+      await ref.doc(postId).update({
+        'likes': likes,
+      });
+    } catch (e) {
+      showToastMessage(e.toString());
+    }
   }
 }

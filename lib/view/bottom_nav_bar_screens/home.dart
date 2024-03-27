@@ -1,9 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svgst.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+import '../../components/my_post.dart';
+
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var ref = FirebaseFirestore.instance.collection('Posts').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -12,25 +24,59 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: mobileBackgroundColor,
         title: SvgPicture.asset(
+          height: height * 0.045,
           'assets/images/instagram_logo.svg',
           color: primaryColor,
         ),
         centerTitle: false,
         actions: [
           Icon(
-            Icons.messenger,
+            FontAwesomeIcons.heart,
+            color: secondaryColor,
+          ),
+          SizedBox(
+            width: width * 0.03,
+          ),
+          Icon(
+            FontAwesomeIcons.facebookMessenger,
+            color: secondaryColor,
           ),
           SizedBox(
             width: width * 0.02,
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [],
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder(
+              stream: ref,
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
+                if (snap.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: snap.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      return MyPost(
+                        //it will show the latest post at top
+                        snapshot: snap
+                            .data!.docs[snap.data!.docs.length - index - 1]
+                            .data(),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

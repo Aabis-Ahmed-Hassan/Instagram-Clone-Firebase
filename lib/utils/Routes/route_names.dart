@@ -18,4 +18,7 @@ class RouteNames {
 
 //web view
   static const web = 'web';
+
+  //comments screen
+  static const comments = 'comments';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/view/auth/login_view.dart';
 import 'package:instagram_clone_firebase/view/auth/signup_view.dart';
+import 'package:instagram_clone_firebase/view/comments_screen.dart';
 import 'package:instagram_clone_firebase/view/splash_view.dart';
 
 import '../../view/responsiveness/layout_determiner.dart';
@@ -25,6 +26,9 @@ class Routes {
 
       case RouteNames.web:
         return MaterialPageRoute(builder: (context) => WebLayout());
+
+      case RouteNames.comments:
+        return MaterialPageRoute(builder: (context) => CommentsScreen());
 
       case RouteNames.layout_determiner:
         return MaterialPageRoute(
