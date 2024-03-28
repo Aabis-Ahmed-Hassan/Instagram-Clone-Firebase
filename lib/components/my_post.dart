@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:instagram_clone_firebase/utils/Routes/route_names.dart';
+import 'package:instagram_clone_firebase/modals/user_modal.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
+import 'package:instagram_clone_firebase/view/comments_screen.dart';
+import 'package:instagram_clone_firebase/view_modal/user_provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/utils.dart';
 
@@ -23,6 +26,7 @@ class _MyPostState extends State<MyPost> {
     double width = MediaQuery.of(context).size.width * 1;
 
     double _myPostPadding = 0.04;
+    UserModal user = Provider.of<UserProvider>(context).getUser;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: height * 0.0125),
       child: Column(
@@ -85,10 +89,10 @@ class _MyPostState extends State<MyPost> {
                       child: InkWell(
                         onTap: () async {
                           await Utils.likePost(widget.snapshot['postId'],
-                              widget.snapshot['uid'], widget.snapshot['likes']);
+                              user.uid.toString(), widget.snapshot['likes']);
                         },
                         child: widget.snapshot['likes']
-                                .contains(widget.snapshot['uid'])
+                                .contains(user.uid.toString())
                             ? Icon(
                                 Icons.favorite,
                                 color: Colors.red,
@@ -104,7 +108,13 @@ class _MyPostState extends State<MyPost> {
                       ),
                       child: IconButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, RouteNames.comments);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    CommentsScreen(postSnapshot: widget.snapshot),
+                              ),
+                            );
                           },
                           icon: Icon(Icons.messenger_outline_outlined)),
                     ),

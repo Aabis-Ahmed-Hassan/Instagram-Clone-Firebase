@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone_firebase/utils/Routes/route_names.dart';
+import 'package:uuid/uuid.dart';
 
 class Utils {
   static pickImage(ImageSource source) async {
@@ -48,7 +49,36 @@ class Utils {
         'likes': likes,
       });
     } catch (e) {
-      showToastMessage(e.toString());
+      Utils.showToastMessage(e.toString());
+    }
+  }
+
+  static Future<void> addComment(
+    String uid,
+    String postId,
+    String profileImageUrl,
+    String username,
+    String comment,
+  ) async {
+    String commentId = Uuid().v1();
+    Map<String, dynamic> data = {
+      'postId': postId,
+      'uid': uid,
+      'profileImageUrl': profileImageUrl,
+      'username': username,
+      'comment': comment,
+      'date': DateTime.now(),
+    };
+
+    try {
+      var ref = FirebaseFirestore.instance
+          .collection('Posts')
+          .doc(postId)
+          .collection('Comments');
+
+      await ref.doc(commentId).set(data);
+    } catch (e) {
+      Utils.showToastMessage(e.toString());
     }
   }
 }

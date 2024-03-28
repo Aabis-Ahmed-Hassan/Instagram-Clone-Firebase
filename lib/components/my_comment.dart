@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MyComment extends StatelessWidget {
-  const MyComment({super.key});
+class MyComment extends StatefulWidget {
+  final snapshot;
+  MyComment({super.key, required this.snapshot});
 
+  @override
+  State<MyComment> createState() => _MyCommentState();
+}
+
+class _MyCommentState extends State<MyComment> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 1;
@@ -18,7 +24,7 @@ class MyComment extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage('asdf'),
+            backgroundImage: NetworkImage(widget.snapshot['profileImageUrl']),
           ),
           Expanded(
             child: Padding(
@@ -33,14 +39,13 @@ class MyComment extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'username',
+                          text: widget.snapshot['username'],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         TextSpan(
-                          text:
-                              'The content of the comment will be shown here The content of the comment will be shown here The content of the comment will be shown here The content of the comment will be shown here ',
+                          text: '  ${widget.snapshot['comment']}',
                           style: TextStyle(
                             height: height * 0.0018,
                           ),
