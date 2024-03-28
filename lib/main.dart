@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark().copyWith(
+        
+         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: Colors.black,
         ),
         // home: LayoutDeterminer(
