@@ -135,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                   onTap: logIn,
                   // onTap: () async {
                   //   if (formKey.currentState!.validate()) {
-                  //     signupUser();
+                  //     await logIn();
                   //   }
                   // },
                   title: 'Log In',

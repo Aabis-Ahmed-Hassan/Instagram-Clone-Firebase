@@ -81,4 +81,18 @@ class Utils {
       Utils.showToastMessage(e.toString());
     }
   }
+
+  static Future<void> deletePost(String postId) async {
+    var ref = FirebaseFirestore.instance.collection('Posts');
+
+    try {
+      await ref.doc(postId).delete().then((value) {
+        Utils.showToastMessage('Post Deleted Successfully');
+      }).onError((error, stackTrace) {
+        Utils.showToastMessage(error.toString());
+      });
+    } catch (e) {
+      Utils.showToastMessage(e.toString());
+    }
+  }
 }

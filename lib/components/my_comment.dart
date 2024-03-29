@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../utils/colors.dart';
 
 class MyComment extends StatefulWidget {
   final snapshot;
+
   MyComment({super.key, required this.snapshot});
 
   @override
@@ -57,8 +62,10 @@ class _MyCommentState extends State<MyComment> {
                     height: height * 0.01,
                   ),
                   Text(
-                    '01,04,2024',
+                    DateFormat.yMMMd().format(
+                        (widget.snapshot['date'] as Timestamp).toDate()),
                     style: TextStyle(
+                      color: secondaryColor,
                       fontSize: 12,
                     ),
                   ),
@@ -66,13 +73,16 @@ class _MyCommentState extends State<MyComment> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(
-              width * 0.02,
-            ),
-            child: Icon(
-              Icons.favorite,
-              size: 18,
+          InkWell(
+            onTap: () {},
+            child: Padding(
+              padding: EdgeInsets.all(
+                width * 0.02,
+              ),
+              child: Icon(
+                Icons.favorite_outline,
+                size: 18,
+              ),
             ),
           ),
         ],

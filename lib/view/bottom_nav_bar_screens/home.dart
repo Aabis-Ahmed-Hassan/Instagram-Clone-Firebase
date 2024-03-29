@@ -15,7 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var ref = FirebaseFirestore.instance.collection('Posts').snapshots();
+  var ref = FirebaseFirestore.instance
+      .collection('Posts')
+      .orderBy('datePublished', descending: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       return MyPost(
                         //it will show the latest post at top
-                        snapshot: snap
-                            .data!.docs[snap.data!.docs.length - index - 1]
-                            .data(),
+                        snapshot: snap.data!.docs[index].data(),
                       );
                     },
                   );

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +31,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   //show loading instead of 'Post' when the user clicks on 'Post'.
   bool loading = false;
 
+
   Future<void> postTheComment(String uid, String postId, String profileImageUrl,
       String username, String comment) async {
     setState(() {
@@ -41,6 +45,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
       username,
       comment,
     );
+
+    _commentController.text = '';
 
     setState(() {
       loading = false;
@@ -59,32 +65,50 @@ class _CommentsScreenState extends State<CommentsScreen> {
         backgroundColor: mobileBackgroundColor,
         centerTitle: true,
       ),
-      body: Expanded(
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('Posts')
-              .doc(widget.postSnapshot['postId'])
-              .collection('Comments')
-              .snapshots(),
-          builder: (context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                  commentSnapshot) {
-            if (commentSnapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              print(commentSnapshot.data!.docs.length);
-
-              return ListView.builder(
-                  itemCount: commentSnapshot.data!.docs.length,
-                  itemBuilder: (context, index) {
-                    return MyComment(
-                        snapshot: commentSnapshot.data!.docs[index]);
-                  });
-            }
-          },
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('Posts')
+                  .doc(widget.postSnapshot['postId'])
+                  .collection('Comments')
+                  .orderBy(
+                    'date',
+                    descending: true,
+                  )
+                  .snapshots(),
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                      commentSnapshot) {
+                if (commentSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  if (commentSnapshot.data!.docs.length == 0) {
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: height * 0.02),
+                        child: Text('This post has no comments. '),
+                      ),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: commentSnapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        return MyComment(
+                            snapshot: commentSnapshot.data!.docs[index]);
+                      },
+                    );
+                  }
+                }
+              },
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: Container(
         height: kToolbarHeight,

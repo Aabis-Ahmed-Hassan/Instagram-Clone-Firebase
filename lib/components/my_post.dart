@@ -20,6 +20,15 @@ class MyPost extends StatefulWidget {
 }
 
 class _MyPostState extends State<MyPost> {
+  Future<void> deletePost(String postId, String currentUserUID) async {
+    if (currentUserUID == widget.snapshot['uid']) {
+      await Utils.deletePost(postId);
+    } else {
+      Utils.showToastMessage(
+          "You can't delete this post because it's not your post. ");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 1;
@@ -55,8 +64,24 @@ class _MyPostState extends State<MyPost> {
                   widget.snapshot['username'].toString(),
                 ),
                 Spacer(),
-                Icon(
-                  Icons.more_vert,
+                PopupMenuButton(
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        height: height * 0.035,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.02,
+                        ),
+                        onTap: () async {
+                          await deletePost(
+                            widget.snapshot['postId'],
+                            user.uid.toString(),
+                          );
+                        },
+                        child: Text('Delete'),
+                      ),
+                    ];
+                  },
                 ),
               ],
             ),
@@ -111,8 +136,8 @@ class _MyPostState extends State<MyPost> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    CommentsScreen(postSnapshot: widget.snapshot),
+                                builder: (context) => CommentsScreen(
+                                    postSnapshot: widget.snapshot),
                               ),
                             );
                           },
@@ -147,11 +172,51 @@ class _MyPostState extends State<MyPost> {
                   ),
                 ),
                 SizedBox(height: height * 0.0055),
-                Text(
-                  'View all 100 comments',
-                  style: TextStyle(
-                    color: secondaryColor,
-                  ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CommentsScreen(postSnapshot: widget.snapshot),
+                      ),
+                    );
+                  },
+                  child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('Posts')
+                          .doc(widget.snapshot['postId'])
+                          .collection('Comments')
+                          .snapshots(),
+                      builder: (context,
+                          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                              commentCountSnapshot) {
+                        if (commentCountSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Text(
+                            'Loading...',
+                            style: TextStyle(
+                              color: secondaryColor,
+                            ),
+                          );
+                        } else {
+                          if (commentCountSnapshot.data!.docs.length == 0) {
+                            return Text(
+                              'No Comments Yet.',
+                              style: TextStyle(
+                                color: secondaryColor,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              'View all ${commentCountSnapshot.data!.docs.length.toString()} comments',
+                              style: TextStyle(
+                                color: secondaryColor,
+                              ),
+                            );
+                          }
+                        }
+                      }),
                 ),
                 Text(
                   DateFormat.yMMMd().format(
