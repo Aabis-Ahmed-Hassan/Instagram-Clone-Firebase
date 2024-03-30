@@ -196,7 +196,7 @@ class _MyPostState extends State<MyPost> {
                           return Text(
                             'Loading...',
                             style: TextStyle(
-                              color: secondaryColor,
+                              color: tertiaryColor,
                             ),
                           );
                         } else {
@@ -204,14 +204,14 @@ class _MyPostState extends State<MyPost> {
                             return Text(
                               'No Comments Yet.',
                               style: TextStyle(
-                                color: secondaryColor,
+                                color: tertiaryColor,
                               ),
                             );
                           } else {
                             return Text(
                               'View all ${commentCountSnapshot.data!.docs.length.toString()} comments',
                               style: TextStyle(
-                                color: secondaryColor,
+                                color: tertiaryColor,
                               ),
                             );
                           }
@@ -222,7 +222,7 @@ class _MyPostState extends State<MyPost> {
                   DateFormat.yMMMd().format(
                       (widget.snapshot['datePublished'] as Timestamp).toDate()),
                   style: TextStyle(
-                    color: secondaryColor,
+                    color: tertiaryColor,
                   ),
                 ),
               ],

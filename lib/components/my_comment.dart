@@ -65,7 +65,7 @@ class _MyCommentState extends State<MyComment> {
                     DateFormat.yMMMd().format(
                         (widget.snapshot['date'] as Timestamp).toDate()),
                     style: TextStyle(
-                      color: secondaryColor,
+                      color: tertiaryColor,
                       fontSize: 12,
                     ),
                   ),

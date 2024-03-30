@@ -38,14 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Icon(
             FontAwesomeIcons.heart,
-            color: secondaryColor,
+            color: tertiaryColor,
           ),
           SizedBox(
             width: width * 0.03,
           ),
           Icon(
             FontAwesomeIcons.facebookMessenger,
-            color: secondaryColor,
+            color: tertiaryColor,
           ),
           SizedBox(
             width: width * 0.02,

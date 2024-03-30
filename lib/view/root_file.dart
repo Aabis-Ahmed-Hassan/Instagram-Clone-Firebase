@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/home.dart';
+import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/profile_screen.dart';
 import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/search_screen.dart';
 
 import 'bottom_nav_bar_screens/add_post.dart';
@@ -20,7 +22,9 @@ class _RootFileState extends State<RootFile> {
     SearchScreen(),
     AddPost(),
     RoughScreen(i: 3),
-    RoughScreen(i: 4),
+    ProfileScreen(
+      uid: FirebaseAuth.instance.currentUser!.uid,
+    ),
   ];
   int currentPage = 0;
   @override
@@ -95,7 +99,7 @@ class _RootFileState extends State<RootFile> {
               },
               icon: Icon(
                 Icons.home,
-                color: currentPage == 0 ? primaryColor : secondaryColor,
+                color: currentPage == 0 ? primaryColor : tertiaryColor,
               ),
             ),
             IconButton(
@@ -106,7 +110,7 @@ class _RootFileState extends State<RootFile> {
               },
               icon: Icon(
                 Icons.search,
-                color: currentPage == 1 ? primaryColor : secondaryColor,
+                color: currentPage == 1 ? primaryColor : tertiaryColor,
               ),
             ),
             IconButton(
@@ -117,7 +121,7 @@ class _RootFileState extends State<RootFile> {
               },
               icon: Icon(
                 Icons.add_box_outlined,
-                color: currentPage == 2 ? primaryColor : secondaryColor,
+                color: currentPage == 2 ? primaryColor : tertiaryColor,
               ),
             ),
             IconButton(
@@ -128,7 +132,7 @@ class _RootFileState extends State<RootFile> {
               },
               icon: Icon(
                 Icons.video_call,
-                color: currentPage == 3 ? primaryColor : secondaryColor,
+                color: currentPage == 3 ? primaryColor : tertiaryColor,
               ),
             ),
             IconButton(
@@ -139,7 +143,7 @@ class _RootFileState extends State<RootFile> {
               },
               icon: Icon(
                 Icons.person,
-                color: currentPage == 4 ? primaryColor : secondaryColor,
+                color: currentPage == 4 ? primaryColor : tertiaryColor,
               ),
             ),
           ],
