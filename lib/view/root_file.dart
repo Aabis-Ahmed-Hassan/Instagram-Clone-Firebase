@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/home.dart';
+import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/search_screen.dart';
 
 import 'bottom_nav_bar_screens/add_post.dart';
 
@@ -13,11 +14,10 @@ class RootFile extends StatefulWidget {
 }
 
 class _RootFileState extends State<RootFile> {
-
   //screens for bottom nav bar
   List<Widget> pages = [
-HomeScreen(),
-    RoughScreen(i: 1),
+    HomeScreen(),
+    SearchScreen(),
     AddPost(),
     RoughScreen(i: 3),
     RoughScreen(i: 4),
