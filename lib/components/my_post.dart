@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone_firebase/modals/user_modal.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
+import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/profile_screen.dart';
 import 'package:instagram_clone_firebase/view/comments_screen.dart';
 import 'package:instagram_clone_firebase/view_modal/user_provider.dart';
 import 'package:intl/intl.dart';
@@ -52,16 +53,32 @@ class _MyPostState extends State<MyPost> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage:
-                      NetworkImage(widget.snapshot['profileImage'].toString()),
-                  radius: width * 0.0575,
-                ),
-                SizedBox(
-                  width: width * 0.02,
-                ),
-                Text(
-                  widget.snapshot['username'].toString(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(
+                          uid: widget.snapshot['uid'],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            widget.snapshot['profileImage'].toString()),
+                        radius: width * 0.0575,
+                      ),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      Text(
+                        widget.snapshot['username'].toString(),
+                      ),
+                    ],
+                  ),
                 ),
                 Spacer(),
                 PopupMenuButton(
@@ -89,7 +106,7 @@ class _MyPostState extends State<MyPost> {
           GestureDetector(
             onDoubleTap: () async {
               await Utils.likePost(widget.snapshot['postId'],
-                  widget.snapshot['uid'], widget.snapshot['likes']);
+                  user.uid.toString(), widget.snapshot['likes']);
             },
             child: Image(
               height: height * 0.35,
