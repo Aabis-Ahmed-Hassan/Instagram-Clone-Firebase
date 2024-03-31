@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +29,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   //show loading instead of 'Post' when the user clicks on 'Post'.
   bool loading = false;
-
 
   Future<void> postTheComment(String uid, String postId, String profileImageUrl,
       String username, String comment) async {
@@ -75,7 +73,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   .collection('Comments')
                   .orderBy(
                     'date',
-                    descending: true,
+                    descending: false,
                   )
                   .snapshots(),
               builder: (context,

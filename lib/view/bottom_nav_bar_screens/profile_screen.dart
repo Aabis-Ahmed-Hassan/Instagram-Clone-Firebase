@@ -27,6 +27,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int numberOfFollowers = -1;
   int numberOfFollowing = -1;
 
+  var ref = FirebaseFirestore.instance.collection('Users');
+  var currentUserRef = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -82,6 +85,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //remove loading (Circular Progress Indicator)
     isLoading = false;
     setState(() {});
+  }
+
+  //it will add/remove currentUser's uid in profileUser's followers list
+  //and it will add/remove profileUser's uid in currentUser's following list
+  Future<void> followFunction() async {
+//add/remove current user's uid in profile user's followers list
+    var fetchUserDetails = await ref.doc(widget.uid).get();
+
+    List followersList = fetchUserDetails['followers'];
+    if (isFollowing) {
+      followersList.remove(currentUserRef!.uid);
+    } else {
+      followersList.add(currentUserRef!.uid);
+    }
+
+    await ref
+        .doc(widget.uid)
+        .update({'followers': followersList}).then((value) {
+      setState(() {
+        isFollowing = !isFollowing;
+      });
+    });
+
+//add/remove profile user's uid from current user's following list
+
+    var ref2 = FirebaseFirestore.instance.collection('Users');
+    var currentUserDetail = await ref2.doc(currentUserRef!.uid).get();
+
+    List followingList = currentUserDetail['following'];
+    if (isFollowing) {
+      followingList.add(widget.uid);
+    } else {
+      followersList.remove(widget.uid);
+    }
+
+    await ref2
+        .doc(currentUserRef!.uid)
+        .update({'following': followingList}).then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -206,21 +249,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           : Row(
                               children: [
-                                isFollowing
-                                    ? Expanded(
-                                        child: MyFollowButtonForProfileScreen(
-                                          title: 'Following',
-                                          onTap: () {},
-                                          isLeftButton: true,
-                                        ),
-                                      )
-                                    : Expanded(
-                                        child: MyFollowButtonForProfileScreen(
-                                          title: 'Follow',
-                                          onTap: () {},
-                                          isLeftButton: true,
-                                        ),
-                                      ),
+                                Expanded(
+                                  child: MyFollowButtonForProfileScreen(
+                                    title: isFollowing ? 'Following' : 'Follow',
+                                    onTap: () async {
+                                      await followFunction();
+                                    },
+                                    isLeftButton: true,
+                                  ),
+                                ),
                                 Expanded(
                                   child: MyFollowButtonForProfileScreen(
                                     title: 'Message',
@@ -303,6 +340,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           }
                         },
                       ),
+
+                      StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(widget.uid)
+                            .snapshots(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('Posts')
+                                        .where('uid', isEqualTo: widget.uid)
+                                        .snapshots(),
+                                    builder:
+                                        (context, AsyncSnapshot postSnapshot) {
+                                      if (!postSnapshot.hasData) {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      } else {
+                                        return MyStats(
+                                            amount:
+                                                postSnapshot.data!.docs.length,
+                                            title: 'Posts');
+                                      }
+                                    }),
+                                MyStats(
+                                    amount: snapshot.data['followers'].length,
+                                    title: 'Followers'),
+                                MyStats(
+                                    amount: snapshot.data['following'].length,
+                                    title: 'Following'),
+                              ],
+                            );
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
+                      // StreamBuilder(
+                      //     stream: FirebaseFirestore.instance
+                      //         .collection('Users')
+                      //         .doc(widget.uid)
+                      //         .snapshots(),
+                      //     builder: (context,
+                      //         AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                      //             snapshot) {
+                      //       return Text('adf');
+                      //     })
                     ],
                   ),
                 ),
