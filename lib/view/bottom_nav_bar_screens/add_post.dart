@@ -86,6 +86,7 @@ class _AddPostState extends State<AddPost> {
     try {
       await uploadPostData(
           _postImage, uid, description, username, profileImage);
+      _postDescription.text = '';
       setState(
         () {
           _loading = false;

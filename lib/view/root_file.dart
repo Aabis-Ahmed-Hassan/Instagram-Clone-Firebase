@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/rough_screen.dart';
@@ -135,17 +136,30 @@ class _RootFileState extends State<RootFile> {
                 color: currentPage == 3 ? primaryColor : tertiaryColor,
               ),
             ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  currentPage = 4;
-                });
-              },
-              icon: Icon(
-                Icons.person,
-                color: currentPage == 4 ? primaryColor : tertiaryColor,
-              ),
-            ),
+            FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .get(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  return CircleAvatar(
+                    radius: height * 0.02,
+                    backgroundImage: NetworkImage(
+                      snapshot.data['imageUrl'],
+                    ),
+                  );
+                }),
+            // IconButton(
+            //   onPressed: () {
+            //     setState(() {
+            //       currentPage = 4;
+            //     });
+            //   },
+            // icon: Icon(
+            //   Icons.person,
+            //   color: currentPage == 4 ? primaryColor : tertiaryColor,
+            // ),
+            // ),
           ],
         ),
       ),
