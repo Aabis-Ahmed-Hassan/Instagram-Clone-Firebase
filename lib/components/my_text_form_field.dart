@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/constants/responsive_dimensions.dart';
+
 class MyTextFormField extends StatelessWidget {
   String hintText;
   TextEditingController controller;
@@ -33,7 +35,9 @@ class MyTextFormField extends StatelessWidget {
       obscureText: obscureText,
       validator: validator,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(width * 0.035),
+        contentPadding: width > WebDimensions
+            ? EdgeInsets.symmetric(horizontal: width * 0.0075)
+            : EdgeInsets.all(width * 0.035),
         hintText: hintText,
         border: my_border,
         enabledBorder: my_border,

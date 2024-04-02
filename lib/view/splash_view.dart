@@ -28,7 +28,7 @@ class _SplashViewState extends State<SplashView> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * padding),
+          padding: EdgeInsets.symmetric(horizontal: width * mobileViewPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

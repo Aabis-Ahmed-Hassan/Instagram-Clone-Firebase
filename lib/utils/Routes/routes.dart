@@ -4,8 +4,8 @@ import 'package:instagram_clone_firebase/view/auth/signup_view.dart';
 import 'package:instagram_clone_firebase/view/splash_view.dart';
 
 import '../../view/responsiveness/layout_determiner.dart';
+import '../../view/responsiveness/mobile_layout.dart';
 import '../../view/responsiveness/web_layout.dart';
-import '../../view/root_file.dart';
 import 'route_names.dart';
 
 class Routes {
@@ -21,7 +21,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => SplashView());
 
       case RouteNames.mobile:
-        return MaterialPageRoute(builder: (context) => RootFile());
+        return MaterialPageRoute(builder: (context) => MobileLayout());
 
       case RouteNames.web:
         return MaterialPageRoute(builder: (context) => WebLayout());
@@ -29,7 +29,7 @@ class Routes {
       case RouteNames.layout_determiner:
         return MaterialPageRoute(
             builder: (context) => LayoutDeterminer(
-                WebLayout: WebLayout(), MobileLayout: RootFile()));
+                WebLayout: WebLayout(), MobileLayout: MobileLayout()));
 
       default:
         return MaterialPageRoute(

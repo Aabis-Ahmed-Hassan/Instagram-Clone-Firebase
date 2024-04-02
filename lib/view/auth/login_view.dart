@@ -5,6 +5,7 @@ import 'package:instagram_clone_firebase/components/my_auth_button.dart';
 import 'package:instagram_clone_firebase/components/my_text_form_field.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/constants/padding.dart';
+import 'package:instagram_clone_firebase/utils/constants/responsive_dimensions.dart';
 import 'package:instagram_clone_firebase/utils/utils.dart';
 
 import '../../utils/Routes/route_names.dart';
@@ -58,9 +59,11 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
           body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * padding,
-          ),
+          padding: width > WebDimensions
+              ? EdgeInsets.symmetric(horizontal: width * webViewPadding)
+              : EdgeInsets.symmetric(
+                  horizontal: width * mobileViewPadding,
+                ),
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone_firebase/modals/user_modal.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
+import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/profile_screen.dart';
 import 'package:instagram_clone_firebase/view/comments_screen.dart';
 import 'package:instagram_clone_firebase/view_modal/user_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../utils/constants/responsive_dimensions.dart';
 import '../utils/utils.dart';
 
 class MyPost extends StatefulWidget {
@@ -38,8 +40,21 @@ class _MyPostState extends State<MyPost> {
 
     double _myPostPadding = 0.04;
     UserModal user = Provider.of<UserProvider>(context).getUser;
-    return Padding(
+    return Container(
+      decoration: BoxDecoration(
+          border: width > WebDimensions
+              ? Border.all(
+                  width: 1,
+                  color: Colors.white,
+                )
+              : null),
       padding: EdgeInsets.symmetric(vertical: height * 0.0125),
+      margin: width > WebDimensions
+          ? EdgeInsets.symmetric(
+              vertical: height * 0.01,
+              horizontal: width * webViewPadding,
+            )
+          : null,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +96,9 @@ class _MyPostState extends State<MyPost> {
                             },
                           ),
                         ),
-                        radius: width * 0.0575,
+                        radius: width > WebDimensions
+                            ? width * 0.015
+                            : width * 0.0575,
                       ),
                       SizedBox(
                         width: width * 0.02,
@@ -203,11 +220,16 @@ class _MyPostState extends State<MyPost> {
                       TextSpan(
                         text: widget.snapshot['username'].toString(),
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
+                          color: primaryColor,
                         ),
                       ),
                       TextSpan(
                         text: '  ${widget.snapshot['description'].toString()}',
+                        style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),

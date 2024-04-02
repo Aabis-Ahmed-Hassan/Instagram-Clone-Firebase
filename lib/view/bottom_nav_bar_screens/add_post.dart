@@ -166,7 +166,8 @@ class _AddPostState extends State<AddPost> {
               ],
             ),
             body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * padding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: width * mobileViewPadding),
               child: Column(
                 children: [
                   //show linear progress indicator

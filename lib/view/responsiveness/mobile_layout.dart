@@ -8,16 +8,16 @@ import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/home.dart';
 import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/profile_screen.dart';
 import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/search_screen.dart';
 
-import 'bottom_nav_bar_screens/add_post.dart';
+import '../bottom_nav_bar_screens/add_post.dart';
 
-class RootFile extends StatefulWidget {
-  RootFile({super.key});
+class MobileLayout extends StatefulWidget {
+  MobileLayout({super.key});
 
   @override
-  State<RootFile> createState() => _RootFileState();
+  State<MobileLayout> createState() => _MobileLayoutState();
 }
 
-class _RootFileState extends State<RootFile> {
+class _MobileLayoutState extends State<MobileLayout> {
   //screens for bottom nav bar
   List<Widget> pages = [
     HomeScreen(),

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
+import 'package:instagram_clone_firebase/utils/constants/responsive_dimensions.dart';
 
 import '../../components/my_post.dart';
 
@@ -26,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = MediaQuery.of(context).size.width * 1;
 
     return Scaffold(
+      backgroundColor:
+          width > WebDimensions ? webBackgroundColor : mobileBackgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: mobileBackgroundColor,

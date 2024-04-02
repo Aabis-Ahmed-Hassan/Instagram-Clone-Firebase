@@ -2,6 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/utils/Routes/route_names.dart';
 import 'package:instagram_clone_firebase/utils/Routes/routes.dart';
+import 'package:instagram_clone_firebase/view/responsiveness/layout_determiner.dart';
+import 'package:instagram_clone_firebase/view/responsiveness/mobile_layout.dart';
+import 'package:instagram_clone_firebase/view/responsiveness/web_layout.dart';
 import 'package:instagram_clone_firebase/view_modal/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,15 +30,13 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        
-         theme: ThemeData.dark().copyWith(
+        theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: Colors.black,
         ),
-        // home: LayoutDeterminer(
-        //   WebLayout: WebLayout(),
-        //   MobileLayout: MobileLayout(),
-        // ),
-
+        home: LayoutDeterminer(
+          WebLayout: WebLayout(),
+          MobileLayout: MobileLayout(),
+        ),
         initialRoute: RouteNames.splash,
         onGenerateRoute: Routes.generateRoutes,
       ),

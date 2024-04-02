@@ -161,14 +161,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: width * padding,
+                  width: width * mobileViewPadding,
                 ),
               ],
             ),
             body: ListView(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * padding),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: width * mobileViewPadding),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
