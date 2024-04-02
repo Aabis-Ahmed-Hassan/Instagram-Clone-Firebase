@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -67,8 +68,19 @@ class _MyPostState extends State<MyPost> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            widget.snapshot['profileImage'].toString()),
+                        backgroundColor: Colors.grey,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                widget.snapshot['profileImage'].toString(),
+                            placeholder: (context, url) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
                         radius: width * 0.0575,
                       ),
                       SizedBox(
@@ -108,12 +120,24 @@ class _MyPostState extends State<MyPost> {
               await Utils.likePost(widget.snapshot['postId'],
                   user.uid.toString(), widget.snapshot['likes']);
             },
-            child: Image(
-              height: height * 0.35,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              image: NetworkImage(widget.snapshot['postImageUrl'].toString()),
-            ),
+            child: Container(
+                height: height * 0.35,
+                width: double.infinity,
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: widget.snapshot['postImageUrl'].toString(),
+                  placeholder: (context, url) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                )),
+            // child: Image(
+            //   height: height * 0.35,
+            //   width: double.infinity,
+            //   fit: BoxFit.cover,
+            //   image: NetworkImage(widget.snapshot['postImageUrl'].toString()),
+            // ),
           ),
           SizedBox(height: height * 0.015),
           Padding(

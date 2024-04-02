@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -54,7 +55,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     .where('username',
                         isGreaterThanOrEqualTo: _searchController.text)
                     .get(),
-                builder: (context, snapshot) {
+                builder: (context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
                   if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
                   } else {
@@ -76,13 +79,20 @@ class _SearchScreenState extends State<SearchScreen> {
                               );
                             },
                             leading: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                (snapshot.data as dynamic).docs[index]
-                                    ['imageUrl'],
-                              ),
-                            ),
-                            title: Text((snapshot.data as dynamic).docs[index]
-                                ['username']),
+                                backgroundColor: Colors.grey,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: CachedNetworkImage(
+                                    imageUrl: snapshot.data!.docs[index]
+                                        ['imageUrl'],
+                                    placeholder: (context, url) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                  ),
+                                )),
+                            title: Text(snapshot.data!.docs[index]['username']),
                           );
                         }
                       },
@@ -113,11 +123,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         ],
                       ),
                       childrenDelegate: SliverChildBuilderDelegate(
-                        (context, index) => Image(
+                        (context, index) => CachedNetworkImage(
+                          imageUrl: snapshot.data!.docs[index]['postImageUrl'],
                           fit: BoxFit.cover,
-                          image: NetworkImage(
-                            snapshot.data!.docs[index]['postImageUrl'],
-                          ),
+                          placeholder: (context, url) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
                         ),
                         childCount: snapshot.data!.docs.length,
                       ),

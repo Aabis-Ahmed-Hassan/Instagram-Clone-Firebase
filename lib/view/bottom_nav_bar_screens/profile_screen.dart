@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -180,26 +181,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           CircleAvatar(
                             radius: height * 0.05,
                             backgroundColor: Colors.grey,
-                            backgroundImage: NetworkImage(
-                              userDetails['imageUrl'],
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: CachedNetworkImage(
+                                imageUrl: userDetails['imageUrl'],
+                                placeholder: (context, url) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           SizedBox(
                             width: width * 0.075,
                           ),
+                          // Expanded(
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //     crossAxisAlignment: CrossAxisAlignment.center,
+                          //     children: [
+                          //       MyStats(amount: numberOfPosts, title: 'Posts'),
+                          //       MyStats(
+                          //           amount: numberOfFollowers,
+                          //           title: 'Followers'),
+                          //       MyStats(
+                          //           amount: numberOfFollowing,
+                          //           title: 'Following'),
+                          //     ],
+                          //   ),
+                          // ),
                           Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                MyStats(amount: numberOfPosts, title: 'Posts'),
-                                MyStats(
-                                    amount: numberOfFollowers,
-                                    title: 'Followers'),
-                                MyStats(
-                                    amount: numberOfFollowing,
-                                    title: 'Following'),
-                              ],
+                            child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .doc(widget.uid)
+                                  .snapshots(),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                if (snapshot.hasData) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      StreamBuilder(
+                                          stream: FirebaseFirestore.instance
+                                              .collection('Posts')
+                                              .where('uid',
+                                                  isEqualTo: widget.uid)
+                                              .snapshots(),
+                                          builder: (context,
+                                              AsyncSnapshot postSnapshot) {
+                                            if (!postSnapshot.hasData) {
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            } else {
+                                              return MyStats(
+                                                  amount: postSnapshot
+                                                      .data!.docs.length,
+                                                  title: 'Posts');
+                                            }
+                                          }),
+                                      MyStats(
+                                          amount:
+                                              snapshot.data['followers'].length,
+                                          title: 'Followers'),
+                                      MyStats(
+                                          amount:
+                                              snapshot.data['following'].length,
+                                          title: 'Following'),
+                                    ],
+                                  );
+                                } else {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              },
                             ),
                           ),
                         ],
@@ -329,69 +388,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 childAspectRatio: 1,
                               ),
                               itemBuilder: (context, index) {
-                                return Image(
+                                return CachedNetworkImage(
+                                  imageUrl: snapshot.data!.docs[index]
+                                      ['postImageUrl'],
+                                  placeholder: (context, url) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                    snapshot.data!.docs[index]['postImageUrl'],
-                                  ),
                                 );
                               },
                             );
                           }
                         },
                       ),
-
-                      StreamBuilder(
-                        stream: FirebaseFirestore.instance
-                            .collection('Users')
-                            .doc(widget.uid)
-                            .snapshots(),
-                        builder: (context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasData) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                StreamBuilder(
-                                    stream: FirebaseFirestore.instance
-                                        .collection('Posts')
-                                        .where('uid', isEqualTo: widget.uid)
-                                        .snapshots(),
-                                    builder:
-                                        (context, AsyncSnapshot postSnapshot) {
-                                      if (!postSnapshot.hasData) {
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      } else {
-                                        return MyStats(
-                                            amount:
-                                                postSnapshot.data!.docs.length,
-                                            title: 'Posts');
-                                      }
-                                    }),
-                                MyStats(
-                                    amount: snapshot.data['followers'].length,
-                                    title: 'Followers'),
-                                MyStats(
-                                    amount: snapshot.data['following'].length,
-                                    title: 'Following'),
-                              ],
-                            );
-                          } else {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                        },
-                      ),
-                      // StreamBuilder(
-                      //     stream: FirebaseFirestore.instance
-                      //         .collection('Users')
-                      //         .doc(widget.uid)
-                      //         .snapshots(),
-                      //     builder: (context,
-                      //         AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                      //             snapshot) {
-                      //       return Text('adf');
-                      //     })
                     ],
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -137,18 +138,40 @@ class _RootFileState extends State<RootFile> {
               ),
             ),
             FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('Users')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .get(),
-                builder: (context, AsyncSnapshot snapshot) {
-                  return CircleAvatar(
-                    radius: height * 0.02,
-                    backgroundImage: NetworkImage(
-                      snapshot.data['imageUrl'],
-                    ),
+              future: FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .get(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                }),
+                } else {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        currentPage = 4;
+                      });
+                    },
+                    child: CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: height * 0.02,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                            imageUrl: snapshot.data['imageUrl'],
+                            placeholder: (context, url) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        )),
+                  );
+                }
+              },
+            ),
             // IconButton(
             //   onPressed: () {
             //     setState(() {

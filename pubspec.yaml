@@ -47,6 +47,8 @@ dependencies:
   uuid: ^4.3.3
   font_awesome_flutter: ^10.7.0
   fluttertoast: ^8.2.4
+  cached_network_image: ^3.3.1
+
 
 
 
