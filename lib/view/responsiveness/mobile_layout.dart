@@ -33,6 +33,7 @@ class _MobileLayoutState extends State<MobileLayout> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height * 1;
     var width = MediaQuery.of(context).size.width * 1;
+    print('mobile layout screen');
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Colors.green,

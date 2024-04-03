@@ -57,6 +57,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     double width = MediaQuery.of(context).size.width * 1;
     UserModal user = Provider.of<UserProvider>(context).getUser;
 
+    print('comments screen');
     return Scaffold(
       appBar: AppBar(
         title: Text('Comments'),

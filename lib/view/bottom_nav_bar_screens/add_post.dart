@@ -118,7 +118,7 @@ class _AddPostState extends State<AddPost> {
 
     // UserModal user = Provider.of<UserProvider>(context, listen: false).getUser;
     UserProvider user = Provider.of<UserProvider>(context, listen: false);
-    print('build');
+    print('add post screen');
     return _postImage == null
         ? Center(
             child: IconButton(

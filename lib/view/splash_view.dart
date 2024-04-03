@@ -25,6 +25,7 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height * 1;
     var width = MediaQuery.of(context).size.width * 1;
+    print('splash screen');
     return Scaffold(
       body: Center(
         child: Padding(

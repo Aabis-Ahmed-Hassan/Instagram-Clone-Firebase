@@ -27,6 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 1;
     double width = MediaQuery.of(context).size.width * 1;
+    print('search  screen');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mobileBackgroundColor,

@@ -36,6 +36,8 @@ class _LayoutDeterminerState extends State<LayoutDeterminer> {
 
   @override
   Widget build(BuildContext context) {
+    print('layout determiner screen');
+
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth > WebDimensions) {

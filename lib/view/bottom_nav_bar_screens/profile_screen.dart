@@ -132,6 +132,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height * 1;
     double width = MediaQuery.of(context).size.width * 1;
+    print('profile screen');
+
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : Scaffold(

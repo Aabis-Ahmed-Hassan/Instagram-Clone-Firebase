@@ -26,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     double height = MediaQuery.of(context).size.height * 1;
     double width = MediaQuery.of(context).size.width * 1;
 
+    print('home screen');
+
     return Scaffold(
       backgroundColor:
           width > WebDimensions ? webBackgroundColor : mobileBackgroundColor,
@@ -57,29 +59,42 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          // Expanded(
+          //   child: StreamBuilder(
+          //     stream: ref,
+          //     builder: (context,
+          //         AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
+          //       if (snap.connectionState == ConnectionState.waiting) {
+          //         return Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       } else {
+          //         return ListView.builder(
+          //           itemCount: snap.data!.docs.length,
+          //           itemBuilder: (context, index) {
+          //             return MyPost(
+          //               //it will show the latest post at top
+          //               snapshot: snap.data!.docs[index].data(),
+          //             );
+          //           },
+          //         );
+          //       }
+          //     },
+          //   ),
+          // ),
+
           Expanded(
-            child: StreamBuilder(
-              stream: ref,
-              builder: (context,
-                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
-                if (snap.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
+            child: FutureBuilder(
+                future: FirebaseFirestore.instance.collection('Posts').get(),
+                builder: (context, AsyncSnapshot snapshot) {
                   return ListView.builder(
-                    itemCount: snap.data!.docs.length,
+                    itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      return MyPost(
-                        //it will show the latest post at top
-                        snapshot: snap.data!.docs[index].data(),
-                      );
+                      return MyPost(snapshot: snapshot.data!.docs[index]);
                     },
                   );
-                }
-              },
-            ),
-          ),
+                }),
+          )
         ],
       ),
     );
