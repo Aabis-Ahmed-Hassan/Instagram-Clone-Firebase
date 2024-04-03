@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/constants/padding.dart';
 import 'package:instagram_clone_firebase/view/auth/login_view.dart';
+import 'package:instagram_clone_firebase/view/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   String uid;
@@ -181,6 +182,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               child: Text('Sign Out'),
                             ),
+                            PopupMenuItem(
+                              onTap: () async {
+                                await FirebaseAuth.instance.currentUser!
+                                    .delete();
+                                await FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                    .delete()
+                                    .then((value) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginView(),
+                                    ),
+                                  );
+                                });
+                              },
+                              child: Text('Delete Account'),
+                            ),
                           ];
                         },
                       )
@@ -325,7 +345,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Expanded(
                                   child: MyFollowButtonForProfileScreen(
                                     title: 'Edit Profile',
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditProfile(),
+                                        ),
+                                      );
+                                    },
                                     isLeftButton: true,
                                   ),
                                 ),

@@ -14,16 +14,6 @@ class MobileLayout extends StatefulWidget {
 }
 
 class _MobileLayoutState extends State<MobileLayout> {
-  //screens for bottom nav bar
-  // List<Widget> pages = [
-  //   HomeScreen(),
-  //   SearchScreen(),
-  //   AddPost(),
-  //   RoughScreen(i: 3),
-  //   ProfileScreen(
-  //     uid: FirebaseAuth.instance.currentUser!.uid,
-  //   ),
-  // ];
   int currentPage = 0;
   @override
   Widget build(BuildContext context) {
@@ -119,17 +109,6 @@ class _MobileLayoutState extends State<MobileLayout> {
                 }
               },
             ),
-            // IconButton(
-            //   onPressed: () {
-            //     setState(() {
-            //       currentPage = 4;
-            //     });
-            //   },
-            // icon: Icon(
-            //   Icons.person,
-            //   color: currentPage == 4 ? primaryColor : tertiaryColor,
-            // ),
-            // ),
           ],
         ),
       ),
