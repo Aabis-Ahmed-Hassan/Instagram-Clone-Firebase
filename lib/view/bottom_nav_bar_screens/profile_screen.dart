@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
 import 'package:instagram_clone_firebase/utils/constants/padding.dart';
+import 'package:instagram_clone_firebase/view/auth/login_view.dart';
 
 class ProfileScreen extends StatefulWidget {
   String uid;
@@ -95,7 +96,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var fetchUserDetails = await ref.doc(widget.uid).get();
 
     List followersList = fetchUserDetails['followers'];
-    if (isFollowing) {
+
+    //
+    // if (isFollowing) {
+    //   followersList.remove(currentUserRef!.uid);
+    // } else {
+    //   followersList.add(currentUserRef!.uid);
+    // }
+
+    if (followersList.contains(currentUserRef!.uid)) {
       followersList.remove(currentUserRef!.uid);
     } else {
       followersList.add(currentUserRef!.uid);
@@ -115,10 +124,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var currentUserDetail = await ref2.doc(currentUserRef!.uid).get();
 
     List followingList = currentUserDetail['following'];
-    if (isFollowing) {
-      followingList.add(widget.uid);
+    if (followingList.contains(widget.uid)) {
+      followingList.remove(widget.uid);
     } else {
-      followersList.remove(widget.uid);
+      followersList.add(widget.uid);
     }
 
     await ref2
@@ -155,13 +164,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: primaryColor,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: primaryColor,
-                  ),
-                ),
+                isOwner
+                    ? PopupMenuButton(
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                              onTap: () {
+                                FirebaseAuth.instance.signOut().then((value) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginView(),
+                                    ),
+                                  );
+                                });
+                              },
+                              child: Text('Sign Out'),
+                            ),
+                          ];
+                        },
+                      )
+                    : IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: primaryColor,
+                        ),
+                      ),
                 SizedBox(
                   width: width * mobileViewPadding,
                 ),

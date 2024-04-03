@@ -35,60 +35,10 @@ class _MobileLayoutState extends State<MobileLayout> {
     var width = MediaQuery.of(context).size.width * 1;
     print('mobile layout screen');
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.green,
-      // ),
       body: IndexedStack(
         children: pages,
         index: currentPage,
       ),
-
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: currentPage,
-      //   onTap: (int page) {
-      //     setState(() {
-      //       currentPage = page;
-      //     });
-      //   },
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.add,
-      //         color: primaryColor,
-      //       ),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.add,
-      //         color: primaryColor,
-      //       ),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.add,
-      //         color: primaryColor,
-      //       ),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.add,
-      //         color: primaryColor,
-      //       ),
-      //       label: '',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(
-      //         Icons.add,
-      //         color: primaryColor,
-      //       ),
-      //       label: '',
-      //     ),
-      //   ],
-      // ),
-
       bottomNavigationBar: BottomAppBar(
         color: mobileBackgroundColor,
         child: Row(
