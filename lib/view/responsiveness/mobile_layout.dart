@@ -2,13 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone_firebase/rough_screen.dart';
 import 'package:instagram_clone_firebase/utils/colors.dart';
-import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/home.dart';
-import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/profile_screen.dart';
-import 'package:instagram_clone_firebase/view/bottom_nav_bar_screens/search_screen.dart';
 
-import '../bottom_nav_bar_screens/add_post.dart';
+import '../../utils/constants/bottom_nav_bar_screens.dart';
 
 class MobileLayout extends StatefulWidget {
   MobileLayout({super.key});
@@ -19,15 +15,15 @@ class MobileLayout extends StatefulWidget {
 
 class _MobileLayoutState extends State<MobileLayout> {
   //screens for bottom nav bar
-  List<Widget> pages = [
-    HomeScreen(),
-    SearchScreen(),
-    AddPost(),
-    RoughScreen(i: 3),
-    ProfileScreen(
-      uid: FirebaseAuth.instance.currentUser!.uid,
-    ),
-  ];
+  // List<Widget> pages = [
+  //   HomeScreen(),
+  //   SearchScreen(),
+  //   AddPost(),
+  //   RoughScreen(i: 3),
+  //   ProfileScreen(
+  //     uid: FirebaseAuth.instance.currentUser!.uid,
+  //   ),
+  // ];
   int currentPage = 0;
   @override
   Widget build(BuildContext context) {
@@ -36,7 +32,7 @@ class _MobileLayoutState extends State<MobileLayout> {
     print('mobile layout screen');
     return Scaffold(
       body: IndexedStack(
-        children: pages,
+        children: bottomNavBarScreens,
         index: currentPage,
       ),
       bottomNavigationBar: BottomAppBar(

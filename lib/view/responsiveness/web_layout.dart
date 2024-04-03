@@ -3,12 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../rough_screen.dart';
 import '../../utils/colors.dart';
-import '../bottom_nav_bar_screens/add_post.dart';
-import '../bottom_nav_bar_screens/home.dart';
-import '../bottom_nav_bar_screens/profile_screen.dart';
-import '../bottom_nav_bar_screens/search_screen.dart';
+import '../../utils/constants/bottom_nav_bar_screens.dart';
 
 class WebLayout extends StatefulWidget {
   WebLayout({super.key});
@@ -20,15 +16,15 @@ class WebLayout extends StatefulWidget {
 class _WebLayoutState extends State<WebLayout> {
   var ref = FirebaseFirestore.instance.collection('My Collection');
 //screens for bottom nav bar
-  List<Widget> pages = [
-    HomeScreen(),
-    SearchScreen(),
-    AddPost(),
-    RoughScreen(i: 3),
-    ProfileScreen(
-      uid: FirebaseAuth.instance.currentUser!.uid,
-    ),
-  ];
+//   List<Widget> pages = [
+//     HomeScreen(),
+//     SearchScreen(),
+//     AddPost(),
+//     RoughScreen(i: 3),
+//     ProfileScreen(
+//       uid: FirebaseAuth.instance.currentUser!.uid,
+//     ),
+//   ];
   int currentPage = 0;
 
   @override
@@ -150,7 +146,7 @@ class _WebLayoutState extends State<WebLayout> {
       //   ],
       // ),
       body: IndexedStack(
-        children: pages,
+        children: bottomNavBarScreens,
         index: currentPage,
       ),
       bottomNavigationBar: BottomAppBar(
