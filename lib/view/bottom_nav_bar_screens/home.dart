@@ -59,30 +59,36 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // Expanded(
-          //   child: StreamBuilder(
-          //     stream: ref,
-          //     builder: (context,
-          //         AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
-          //       if (snap.connectionState == ConnectionState.waiting) {
-          //         return Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       } else {
-          //         return ListView.builder(
-          //           itemCount: snap.data!.docs.length,
-          //           itemBuilder: (context, index) {
-          //             return MyPost(
-          //               //it will show the latest post at top
-          //               snapshot: snap.data!.docs[index].data(),
-          //             );
-          //           },
-          //         );
-          //       }
-          //     },
-          //   ),
-          // ),
-
+          Expanded(
+            child: StreamBuilder(
+              stream: ref,
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snap) {
+                if (snap.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: snap.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      return MyPost(
+                        //it will show the latest post at top
+                        snapshot: snap.data!.docs[index].data(),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 50,
+              width: 250,
+              color: Colors.blue,
+            ),
+          ),
           Expanded(
             child: FutureBuilder(
                 future: FirebaseFirestore.instance.collection('Posts').get(),
@@ -90,6 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      print(snapshot.data!.docs[index]['postImageUrl'].toString());
+
                       return MyPost(snapshot: snapshot.data!.docs[index]);
                     },
                   );
