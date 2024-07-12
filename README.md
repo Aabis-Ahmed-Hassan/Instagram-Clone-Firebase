@@ -1,16 +1,18 @@
-# instagram_clone_firebase
+# Flutter Instagram Clone with Firebase 
 
-A new Flutter project.
 
-## Getting Started
+https://github.com/user-attachments/assets/e9744299-c0d7-4c50-8e50-2eb1883e515a
 
-This project is a starting point for a Flutter application.
+I've created an Instagram clone using the Flutter framework, integrated with Firebase. The app has the following features:
 
-A few resources to get you started if this is your first Flutter project:
+> Users can sign up and log in from anywhere, as it is connected to an online database (Firebase).
+> Users can upload posts.
+> Users can like posts.
+> Users can comment on posts.
+> Users can view others' profiles.
+> Users can follow each other.
+> Users can search for others' profiles.
+> Users can delete their own posts.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The best part is that, since the app is connected to Firebase, all users are connected regardless of their location in the world.
+PS. Sorry, touch taps were disabled, so it might be difficult to figure out where I'm tapping 🙄
